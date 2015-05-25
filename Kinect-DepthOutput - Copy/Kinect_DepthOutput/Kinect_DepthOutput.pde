@@ -1,4 +1,4 @@
-  import kinect4WinSDK.Kinect;
+import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
 
 Kinect kinect;
@@ -16,20 +16,23 @@ void setup()
 void draw()
 {
   background(0);
- image(kinect.GetImage(), 320, 0, 320, 240);
+  image(kinect.GetImage(), 320, 0, 320, 240);
   //image(kinect.GetDepth(), 0, 0, 1920, 1080);
- // image(kinect.GetMask(), 0, 240, 320, 240);
+  // image(kinect.GetMask(), 0, 240, 320, 240);
   for (int i=0; i<bodies.size (); i++) 
   {
     drawSkeleton(bodies.get(i));
     drawPosition(bodies.get(i));
   }
-  
+
   if ( !bodies.isEmpty() )
   {
     SkeletonData _s = bodies.get(0);
     if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_LEFT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
       println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z);
+    }
+    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
+      println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z);
     }
   }
 }
