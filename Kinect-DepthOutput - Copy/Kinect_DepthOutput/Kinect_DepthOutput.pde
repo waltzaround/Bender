@@ -4,7 +4,7 @@ import kinect4WinSDK.SkeletonData;
 Kinect kinect;
 ArrayList <SkeletonData> bodies;
 
-final boolean DRAW_SKELETON = false;
+final boolean DRAW_SKELETON = true;
 
 void setup()
 {
@@ -33,7 +33,7 @@ void draw()
         translate(x, y, -100);
         rotateY(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z, 0, width, 0, PI));
         rotateX(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z, 0, height, 0, PI));
-        box(1200);
+        box(600);
         popMatrix();
       }
     }
