@@ -4,10 +4,11 @@ import kinect4WinSDK.SkeletonData;
 Kinect kinect;
 ArrayList <SkeletonData> bodies;
 
+final boolean DRAW_SKELETON = false;
+
 void setup()
 {
-  size(1920, 1080);
-  background(0);
+  size(1920, 1080, P3D);
   noStroke();
   kinect = new Kinect(this);
   smooth();
@@ -16,31 +17,41 @@ void setup()
 
 void draw()
 {
-   defineLights();
+  defineLights();
   background(0);
   
-  for (int x = 0; x <= width; x += 60) {
-    for (int y = 0; y <= height; y += 60) {
-      pushMatrix();
-      translate(x, y);
-      rotateY(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z, 0, width, 0, PI));
-      rotateX(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z, 0, height, 0, PI));
-      box(90);
-      popMatrix();
+
+  
+  if ( !bodies.isEmpty() )
+  {
+    SkeletonData _s = bodies.get(0);
+    // if -check for NOT_TRACKED
+
+    for (int x = 0; x <= width; x += 60) {
+      for (int y = 0; y <= height; y += 60) {
+        pushMatrix();
+        translate(x, y, -100);
+        rotateY(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z, 0, width, 0, PI));
+        rotateX(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z, 0, height, 0, PI));
+        box(1200);
+        popMatrix();
+      }
     }
   }
-}
   
-  background(0);
-  image(kinect.GetImage(), 320, 0, 320, 240);
+  
+  //image(kinect.GetImage(), 320, 0, 320, 240);
   //image(kinect.GetDepth(), 0, 0, 1920, 1080);
   // image(kinect.GetMask(), 0, 240, 320, 240);
-  for (int i=0; i<bodies.size (); i++) 
+  if ( DRAW_SKELETON )
   {
-    drawSkeleton(bodies.get(i));
-    drawPosition(bodies.get(i));
+    for (int i=0; i<bodies.size (); i++) 
+    {
+      drawSkeleton(bodies.get(i));
+      drawPosition(bodies.get(i));
+    }
   }
-
+  
   if ( !bodies.isEmpty() )
   {
     SkeletonData _s = bodies.get(0);
