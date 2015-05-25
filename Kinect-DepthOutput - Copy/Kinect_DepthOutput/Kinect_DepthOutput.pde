@@ -23,8 +23,8 @@ void draw()
     for (int y = 0; y <= height; y += 60) {
       pushMatrix();
       translate(x, y);
-      rotateY(map(mouseX, 0, width, 0, PI));
-      rotateX(map(mouseY, 0, height, 0, PI));
+      rotateY(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z, 0, width, 0, PI));
+      rotateX(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z, 0, height, 0, PI));
       box(90);
       popMatrix();
     }
