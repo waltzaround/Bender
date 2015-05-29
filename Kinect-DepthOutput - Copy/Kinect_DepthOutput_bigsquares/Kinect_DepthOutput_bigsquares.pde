@@ -2,7 +2,9 @@ import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
 
 Kinect kinect;
-ArrayList <SkeletonData> bodies;
+HashMap <Integer, SkeletonData> bodies;
+
+int activeUserID;
 
 final boolean DRAW_SKELETON = true;
 
@@ -12,7 +14,8 @@ void setup()
   noStroke();
   kinect = new Kinect(this);
   smooth();
-  bodies = new ArrayList<SkeletonData>();
+  bodies = new HashMap<Integer, SkeletonData>();
+  activeUserID = -1;
 }
 
 void draw()
@@ -20,13 +23,16 @@ void draw()
   defineLights();
   background(0);
   
-
-  
-  if ( !bodies.isEmpty() )
+  SkeletonData _s = bodies.get(activeUserID);
+  // if -check for NOT_TRACKED
+  if ( _s != null )
   {
-    SkeletonData _s = bodies.get(0);
-    // if -check for NOT_TRACKED
-
+     if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_LEFT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
+     // println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z);
+    }
+    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
+    //  println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z);
+    }
     for (int x = 0; x <= width; x += 600) {
       for (int y = 0; y <= height; y += 600) {
         pushMatrix();
@@ -45,21 +51,10 @@ void draw()
   // image(kinect.GetMask(), 0, 240, 320, 240);
   if ( DRAW_SKELETON )
   {
-    for (int i=0; i<bodies.size (); i++) 
+    for (SkeletonData sd : bodies.values() ) 
     {
-      drawSkeleton(bodies.get(i));
-      drawPosition(bodies.get(i));
-    }
-  }
-  
-  if ( !bodies.isEmpty() )
-  {
-    SkeletonData _s = bodies.get(0);
-    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_LEFT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
-      println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z);
-    }
-    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
-      println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z);
+      drawSkeleton(sd);
+      drawPosition(sd);
     }
   }
 }
@@ -189,21 +184,36 @@ void appearEvent(SkeletonData _s)
   {
     return;
   }
+  println("appearing: " + _s.dwTrackingID);
   synchronized(bodies) {
-    bodies.add(_s);
+    bodies.put((Integer) _s.dwTrackingID, _s);
+  }
+  if ( activeUserID < 0 )
+  {
+    // First/only user entered 
+    activeUserID = _s.dwTrackingID;
   }
 }
 
 void disappearEvent(SkeletonData _s) 
 {
   synchronized(bodies) {
-    for (int i=bodies.size ()-1; i>=0; i--) 
-    {
-      if (_s.dwTrackingID == bodies.get(i).dwTrackingID) 
-      {
-        bodies.remove(i);
-      }
-    }
+    println("disappearing: " + _s.dwTrackingID);
+    bodies.remove(_s.dwTrackingID);
+  }
+  if ( activeUserID == _s.dwTrackingID )
+  {
+    // bugger, acitve user gone...
+    if ( bodies.isEmpty() )
+   {
+     // ... and no replacement
+     activeUserID = -1;
+   } 
+   else
+   {
+     // give me the remaining ID's, and pick the fcirst one as new active user
+     activeUserID = bodies.keySet().iterator().next();
+   }
   }
 }
 
@@ -214,14 +224,7 @@ void moveEvent(SkeletonData _b, SkeletonData _a)
     return;
   }
   synchronized(bodies) {
-    for (int i=bodies.size ()-1; i>=0; i--) 
-    {
-      if (_b.dwTrackingID == bodies.get(i).dwTrackingID) 
-      {
-        bodies.get(i).copy(_a);
-        break;
-      }
-    }
+    bodies.get(_a.dwTrackingID).copy(_a);
   }
 }
 
