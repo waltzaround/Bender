@@ -9,26 +9,26 @@ int activeUserID;// initialize interger activeUserID
 final boolean DRAW_SKELETON = false; // turn this on if you want to see the skeleton
 
 
-boolean sketchFullScreen() {
-  return true;
+boolean sketchFullScreen() {// switch for making it full screen
+  return true;//yes make it fullscreen
 }
 
-void setup()
+void setup() // void setup
 {
-  size(displayWidth, displayHeight, P3D);//
-  noStroke();
-  kinect = new Kinect(this);
-  smooth();
-  bodies = new HashMap<Integer, SkeletonData>();
-  activeUserID = -1;
-}
+  size(displayWidth, displayHeight, P3D);// set it to maximum resolution width/heightwise
+  noStroke();// no strokes on shapes
+  kinect = new Kinect(this); // tell koomputer that there is a new kinect
+  smooth(); // activate anti aliasing
+  bodies = new HashMap<Integer, SkeletonData>(); // set a new hashaap to count how many bodies there are (important to tell program which body & hands to track)
+  activeUserID = -1; // set active user #
+}// end void setup
 
-void draw()
+void draw() // begin void draw
 {
-  defineLights();
-  background(0);
+  defineLights(); // set lights OMG
+  background(0);// no background
 
-  SkeletonData _s = bodies.get(activeUserID);
+  SkeletonData _s = bodies.get(activeUserID); // we'll define _s later, 
   // if -check for NOT_TRACKED
   if ( _s != null )
   {
