@@ -1,16 +1,21 @@
-import kinect4WinSDK.Kinect;
-import kinect4WinSDK.SkeletonData;
+import kinect4WinSDK.Kinect; //import the Kinect4Win SDK kinect
+import kinect4WinSDK.SkeletonData; //import the Kinect4Win SDK skeletondata
 
-Kinect kinect;
-HashMap <Integer, SkeletonData> bodies;
+Kinect kinect; // computer, Kinect = kinect
+HashMap <Integer, SkeletonData> bodies; // initialize hashmap that pairs an interger with SkeletonData
 
-int activeUserID;
+int activeUserID;// initialize interger activeUserID
 
-final boolean DRAW_SKELETON = true;
+final boolean DRAW_SKELETON = false; // turn this on if you want to see the skeleton
+
+
+boolean sketchFullScreen() {
+  return true;
+}
 
 void setup()
 {
-  size(1920, 1080, P3D);
+  size(displayWidth, displayHeight, P3D);//
   noStroke();
   kinect = new Kinect(this);
   smooth();
@@ -22,36 +27,36 @@ void draw()
 {
   defineLights();
   background(0);
-  
+
   SkeletonData _s = bodies.get(activeUserID);
   // if -check for NOT_TRACKED
   if ( _s != null )
   {
-     if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_LEFT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
-     // println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z);
+    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_LEFT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
+      // println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z);
     }
     if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
-    //  println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z);
+      //  println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z);
     }
     for (int x = 0; x <= width; x += 600) {
       for (int y = 0; y <= height; y += 600) {
         pushMatrix();
         translate(x, y, -100);
-        rotateY(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z, 0, width, 0, PI));
-        rotateX(map(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z, 0, height, 0, PI));
+        rotateY(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z/10), 0, width, 0, PI));
+        rotateX(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z/10), 0, height, 0, PI));
         box(600);
         popMatrix();
       }
     }
   }
-  
-  
+
+
   //image(kinect.GetImage(), 320, 0, 320, 240);
   //image(kinect.GetDepth(), 0, 0, 1920, 1080);
   // image(kinect.GetMask(), 0, 240, 320, 240);
   if ( DRAW_SKELETON )
   {
-    for (SkeletonData sd : bodies.values() ) 
+    for (SkeletonData sd : bodies.values () ) 
     {
       drawSkeleton(sd);
       drawPosition(sd);
@@ -61,18 +66,28 @@ void draw()
 
 void defineLights() {
   // Orange point light on the right
-  pointLight(150, 100, 0,   // Color
-             200, -150, 0); // Position
+  pointLight(150, 100, 0, // Color
+  200, -150, 0); // Position
+  
+  pointLight(50, 100, 30, // Color
+  1800, 1000, 0); // Position
 
   // Blue directional light from the left
   directionalLight(0, 102, 255, // Color
-                   1, 0, 0);    // The x-, y-, z-axis direction
+  1, 0, 0);    // The x-, y-, z-axis direction
 
   // Yellow spotlight from the front
-  spotLight(255, 255, 109,  // Color
-            0, 40, 200,     // Position
-            0, -0.5, -0.5,  // Direction
-            PI / 2, 2);     // Angle, concentration
+  spotLight(255, 255, 109, // Color
+  0, 40, 200, // Position
+  0, -0.5, -0.5, // Direction
+  PI / 2, 2);     // Angle, concentration
+
+
+  // Yellow spotlight from the front
+  spotLight(255, 255, 109, // Color
+  0, 90, 600, // Position
+  0, 0.5, 0.5, // Direction
+  PI / 2, 2);     // Angle, concentration
 }
 
 
@@ -205,15 +220,14 @@ void disappearEvent(SkeletonData _s)
   {
     // bugger, acitve user gone...
     if ( bodies.isEmpty() )
-   {
-     // ... and no replacement
-     activeUserID = -1;
-   } 
-   else
-   {
-     // give me the remaining ID's, and pick the fcirst one as new active user
-     activeUserID = bodies.keySet().iterator().next();
-   }
+    {
+      // ... and no replacement
+      activeUserID = -1;
+    } else
+    {
+      // give me the remaining ID's, and pick the fcirst one as new active user
+      activeUserID = bodies.keySet().iterator().next();
+    }
   }
 }
 
