@@ -6,12 +6,14 @@ HashMap <Integer, SkeletonData> bodies; // initialize hashmap that pairs an inte
 
 int activeUserID;// initialize interger activeUserID
 
+
+
 final boolean DRAW_SKELETON = false; // turn this on if you want to see the skeleton
 
-
-boolean sketchFullScreen() {// switch for making it full screen
-  return true;//yes make it fullscreen
-}
+float leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY;
+//boolean sketchFullScreen() {// switch for making it full screen
+//return true;//yes make it fullscreen
+//}
 
 void setup() // void setup
 {
@@ -44,6 +46,12 @@ void draw() // begin void draw
         translate(x, y, -100);
         rotateY(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z/3), 0, width, 0, PI));
         rotateX(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z/3), 0, height, 0, PI));
+        leftFootX = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_LEFT].x;
+        leftFootY = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_LEFT].y;
+        rightFootX = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_RIGHT].x;
+        rightFootY = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_RIGHT].y;
+        headX = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HEAD].x;
+        headY = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HEAD].y;
         box(30);
         popMatrix();
       }
@@ -66,9 +74,10 @@ void draw() // begin void draw
 
 void defineLights() {
   // Orange point light on the right
-  pointLight(150, 100, 0, // Color
+
+  pointLight((leftFootX/80), (leftFootY/80), 0, // Color
   200, -150, 0); // Position
-  
+
   pointLight(50, 100, 30, // Color
   1800, 1000, 0); // Position
 
