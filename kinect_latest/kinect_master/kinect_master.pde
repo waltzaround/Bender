@@ -40,19 +40,13 @@ void draw() // begin void draw
     if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
       //  println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z);
     }
-    for (int x = 0; x <= width; x += 60) {
-      for (int y = 0; y <= height; y += 60) {
+    for (int x = 0; x <= width; x += 20) {
+      for (int y = 0; y <= height; y += 20) {
         pushMatrix();
         translate(x, y, -100);
         rotateY(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z/3), 0, width, 0, PI));
         rotateX(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z/3), 0, height, 0, PI));
-        leftFootX = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_LEFT].x;
-        leftFootY = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_LEFT].y;
-        rightFootX = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_RIGHT].x;
-        rightFootY = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_FOOT_RIGHT].y;
-        headX = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HEAD].x;
-        headY = _s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HEAD].y;
-        box(30);
+        box(10);
         popMatrix();
       }
     }
