@@ -1,5 +1,12 @@
-import kinect4WinSDK.Kinect; //import the Kinect4Win SDK kinect
-import kinect4WinSDK.SkeletonData; //import the Kinect4Win SDK skeletondata
+
+/**
+ * Project Bender
+ * @Author Walter Lim
+ * This project was developed to experiment with Kinect.
+ * Please refer to readme for required dependencies
+ */
+import kinect4WinSDK.Kinect; //import the Kinect4Win plugin
+import kinect4WinSDK.SkeletonData; //import the Kinect4Win SDK skeletondata plugin
 
 Kinect kinect; // computer, Kinect = kinect
 HashMap <Integer, SkeletonData> bodies; // initialize hashmap that pairs an interger with SkeletonData
@@ -10,12 +17,12 @@ int activeUserID;// initialize interger activeUserID
 
 final boolean DRAW_SKELETON = false; // turn this on if you want to see the skeleton
 
-float leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY;
+float leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY; // declare leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY as float datatype
 //boolean sketchFullScreen() {// switch for making it full screen
 //return true;//yes make it fullscreen
 //}
 
-void setup() // void setup
+void setup() // void setup - run everything here once
 {
   size(displayWidth, displayHeight, P3D);// set it to maximum resolution width/heightwise
   noStroke();// no strokes on shapes
