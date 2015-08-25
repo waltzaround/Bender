@@ -5,24 +5,28 @@
  * This project was developed to experiment with Kinect.
  * Please refer to readme for required dependencies
  */
-import kinect4WinSDK.Kinect; //import the Kinect4Win plugin
-import kinect4WinSDK.SkeletonData; //import the Kinect4Win SDK skeletondata plugin
+import kinect4WinSDK.Kinect; //import the Kinect4Win SDK kinect
+import kinect4WinSDK.SkeletonData; //import the Kinect4Win SDK skeletondata
+import processing.sound.*;
 
+AudioIn input;
+Amplitude rms;
 Kinect kinect; // computer, Kinect = kinect
 HashMap <Integer, SkeletonData> bodies; // initialize hashmap that pairs an interger with SkeletonData
 
 int activeUserID;// initialize interger activeUserID
-
+int volumeLevel; // initialize audio level of input from microphone as an integer
+int scale=1;
 
 
 final boolean DRAW_SKELETON = false; // turn this on if you want to see the skeleton
 
-float leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY; // declare leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY as float datatype
+float leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY;
 //boolean sketchFullScreen() {// switch for making it full screen
 //return true;//yes make it fullscreen
 //}
 
-void setup() // void setup - run everything here once
+void setup() // void setup
 {
   size(displayWidth, displayHeight, P3D);// set it to maximum resolution width/heightwise
   noStroke();// no strokes on shapes
@@ -30,13 +34,34 @@ void setup() // void setup - run everything here once
   smooth(); // activate anti aliasing
   bodies = new HashMap<Integer, SkeletonData>(); // set a new hashaap to count how many bodies there are (important to tell program which body & hands to track)
   activeUserID = -1; // set active user #
-}// end void setup
+  
+      //Create an Audio input and grab the 1st channel
+    input = new AudioIn(this, 0);
+    
+    // start the Audio Input
+    input.start();
+    
+    // create a new Amplitude analyzer
+    rms = new Amplitude(this);
+    
+    // Patch the input to an volume analyzer
+    rms.input(input);
+    
+}    // end void setup
 
 void draw() // begin void draw
 {
   defineLights(); // set lights OMG
   background(0);// no background
+// begin audio section
+    // adjust the volume of the audio input
+    input.amp(map(mouseY, 0, height, 0.0, 1.0));
 
+    // rms.analyze() return a value between 0 and 1. To adjust
+    // the scaling and mapping of an ellipse we scale from 0 to 0.5
+    scale = int(map(rms.analyze(), 0, 0.5, 40, 350));
+    noStroke();
+//end audio section
   SkeletonData _s = bodies.get(activeUserID); // we'll define _s later, 
   // if -check for NOT_TRACKED
   if ( _s != null )
@@ -53,7 +78,7 @@ void draw() // begin void draw
         translate(x, y, -100);
         rotateY(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z/3), 0, width, 0, PI));
         rotateX(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z/3), 0, height, 0, PI));
-        box(10);
+        box(scale);
         popMatrix();
       }
     }
@@ -251,4 +276,3 @@ void moveEvent(SkeletonData _b, SkeletonData _a)
     bodies.get(_a.dwTrackingID).copy(_a);
   }
 }
-
