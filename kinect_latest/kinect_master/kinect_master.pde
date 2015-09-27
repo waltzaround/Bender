@@ -82,6 +82,10 @@ void draw() // begin void draw
         popMatrix();
       }
     }
+  } else {
+println();
+// write idle code here...
+    
   }
 
 
