@@ -5,6 +5,10 @@
  * This project was developed to experiment with Kinect.
  * Please refer to readme for required dependencies
  */
+
+Cube[] cube = new Cube[60];
+import processing.sound.*;
+
 import kinect4WinSDK.Kinect; //import the Kinect4Win SDK kinect
 import kinect4WinSDK.SkeletonData; //import the Kinect4Win SDK for skeletondata
 import processing.sound.*; // import the processing sound library for fancy schmancy sound stuff
@@ -28,7 +32,7 @@ float leftFootX, leftFootY, rightFootX, rightFootY, HeadX, HeadY; // declare lef
 
 void setup() // void setup
 {
- 
+
   size(displayWidth, displayHeight, P3D);// set it to maximum resolution width/heightwise
   noStroke();// no strokes on shapes :(
   kinect = new Kinect(this); // tell koomputer that there is a new kinect
@@ -47,6 +51,12 @@ void setup() // void setup
 
   // Patch the input to an volume analyzer
   rms.input(input);
+
+  for (int i = 0; i < cube.length; i++) {
+    cube[i] = new Cube(random(0, width), random(0, height), 0, 
+      random(30, 80), color(random(255), random(255), random(255), 100), 
+      random(0.001, 0.020), random(0.001, 0.020), random(0.001, 0.020));
+  }
 }    // end void setup
 
 void draw() // begin void draw
@@ -83,33 +93,28 @@ void draw() // begin void draw
       }
     }
   } else {
+
+    for (int i = 0; i < cube.length; i++) {
+      cube[i].size=scale+20;
+      cube[i].update();
+      cube[i].display();
+    }
     println("NOTHING TRACKED");
     // write idle code here...
-    int boxval = 1;
-    for (int i = 0; i < boxval; i++) {
-      translate(random(0, displayWidth), random(0, displayHeight), 0); 
-      rotateY(random(0, 360));
-      rotateX(random(0, 360));
-      rotateZ(random(0, 360));
-      fill(random(0, 255), random(0, 255), random(0, 255), 50);
-      noStroke();
-      box(64, 64, 64);
-    }
-  
-}
-
-
-//image(kinect.GetImage(), 320, 0, 320, 240);
-//image(kinect.GetDepth(), 0, 0, 1920, 1080);
-// image(kinect.GetMask(), 0, 240, 320, 240);
-if ( DRAW_SKELETON )
-{
-  for (SkeletonData sd : bodies.values () )
-  {
-    drawSkeleton(sd);
-    drawPosition(sd);
   }
-}
+
+
+  //image(kinect.GetImage(), 320, 0, 320, 240);
+  //image(kinect.GetDepth(), 0, 0, 1920, 1080);
+  // image(kinect.GetMask(), 0, 240, 320, 240);
+  if ( DRAW_SKELETON )
+  {
+    for (SkeletonData sd : bodies.values () )
+    {
+      drawSkeleton(sd);
+      drawPosition(sd);
+    }
+  }
 }
 
 void defineLights() {
