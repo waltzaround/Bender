@@ -83,9 +83,9 @@ void draw() // begin void draw
       }
     }
   } else {
-println();
+println("NOTHING TRACKED");
 // write idle code here...
-    
+
   }
 
 
