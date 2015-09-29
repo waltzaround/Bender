@@ -53,55 +53,55 @@ void setup() // void setup
   rms.input(input);
 
   for (int i = 0; i < cube.length; i++) {
-    cube[i] = new Cube(random(0, width), random(0, height), 0,
-      random(30, 80), color(random(255), random(255), random(255), 100),
+    cube[i] = new Cube(random(0, width), random(0, height), 0, // initializing cube class so that they all do the spinny thing and the exandy shrninky thing
+      random(30, 80), color(random(255), random(255), random(255), 100), //variables in the order: float x_, float y_, float z_, float size_, color c_, float xSpeed_, float ySpeed_, float zSpeed_
       random(0.001, 0.020), random(0.001, 0.020), random(0.001, 0.020));
   }
 }    // end void setup
 
 void draw() // begin void draw
 {
-  defineLights(); // set lights OMG
+  defineLights(); // set lights OMG TEH BRIGHTNESS
   background(0);// no background
   // begin audio section
   // adjust the volume of the audio input
-  input.amp(map(mouseY, 0, height, 0.0, 1.0));
+  input.amp(map(mouseY, 0, height, 0.0, 1.0)); // declare the bounds of the input values
 
   // rms.analyze() return a value between 0 and 1. To adjust
   // the scaling and mapping of an ellipse we scale from 0 to 0.5
   scale = int(map(rms.analyze(), 0, 0.5, 40, 350));
-  if (scale <= 60)
+  if (scale <= 60) // is scale below 60?
     {
-    scale = 60;
+    scale = 60; // if scale is below 60, force it to be 60 because otherwise it looks like absolute shit :(
     }
-  noStroke();
+  noStroke(); // computer, I do not want lines on my bloody shapes
   //end audio section
   SkeletonData _s = bodies.get(activeUserID); // we'll define _s later,
   // if -check for NOT_TRACKED
-  if ( _s != null )
+  if ( _s != null ) // is _s not equal to null?
   {
-    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_LEFT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
+    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_LEFT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) { // is there a left hand?
       // println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z);
     }
-    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
+    if (_s.skeletonPositionTrackingState[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) { // is there a right hand?
       //  println(_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z);
     }
-    for (int x = 0; x <= width; x += 20) {
-      for (int y = 0; y <= height; y += 20) {
-        pushMatrix();
-        translate(x, y, -100);
-        rotateY(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z/3), 0, width, 0, PI));
-        rotateX(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z/3), 0, height, 0, PI));
-        box(scale);
-        popMatrix();
+    for (int x = 0; x <= width; x += 60) { // set integer x to be equal or greater than 60
+      for (int y = 0; y <= height; y += 60) { //  set integer y to be equal or greater than 60
+        pushMatrix(); // pushmatrix
+        translate(x, y, -100); // set the depth to be -100 pixels deeper than the default screen depth
+        rotateY(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].z/3), 0, width, 0, PI)); // rotate cubes on the y axis an amount relative to the amount of left hand movement divided by 3 so that it isnt so janky
+        rotateX(map((_s.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].z/3), 0, height, 0, PI)); //  rotate cubes on the x axis relative to the amount of right hand movement divided by 3 so that it isnt so janky
+        box(scale); // create a cube with the size of whatever the hell the scale value is TL:DR: box size is equal how loud the room is
+        popMatrix(); // popMatrix
       }
     }
-  } else {
+  } else { // IF there are no people detected by the sensor....
 
     for (int i = 0; i < cube.length; i++) {
-      cube[i].size=scale+20;
-      cube[i].update();
-      cube[i].display();
+      cube[i].size=scale+20; // tell the cubes that they all have to larger than scale + 20
+      cube[i].update(); // update cube values
+      cube[i].display(); //  OMG SHOW THE CUBES TO THE PEOPLE. LET THE PEOPLE EAT CUBES.
     }
     println("NOTHING TRACKED");
     // write idle code here...
