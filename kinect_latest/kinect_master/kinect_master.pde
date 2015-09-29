@@ -304,11 +304,11 @@ void disappearEvent(SkeletonData _s)
 
 void moveEvent(SkeletonData _b, SkeletonData _a)
 {
-  if (_a.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED)
+  if (_a.trackingState == Kinect.NUI_SKELETON_NOT_TRACKED) // in the event that nobody is being tracked....
   {
-    return;
+    return; // GTFO
   }
-  synchronized(bodies) {
-    bodies.get(_a.dwTrackingID).copy(_a);
+  synchronized(bodies) { // synchronise body hashmap
+    bodies.get(_a.dwTrackingID).copy(_a); // make a copy of the TrackingID in the bodies hashmap
   }
 }
