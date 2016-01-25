@@ -4,7 +4,7 @@ Requires Microsoft Kinect v1.
 
 Interactive exhibit that pulls X,Y,Z coordinates from your hands and rotates a grid of cubes based on how much you move around. The project uses Z (depth) data from your left and right hands to rotate cubes on the X & Y axis respectively. Also scales sizes of cubes depending on amount of noise the kinect microphone detects.
 
-When no people are detected in front of the camera, it generates random cubes that spin in a random rotation independent of each other. The cubes change size based on the amount of noise the Kinect picks up.
+When no people are detected in front of the camera, it generates random cubes that spin in a random rotation independent of each other. The cubes change size based on the amount of noise the Kinect picks up. Developed with the Processing framework, and the Kinect4Win library which is a Java wrapper for the 1.6 Kinect SDK.
 
 Written for the CTEC607 Creative Technologies Studio III Paper at Auckland University of Technology
 
