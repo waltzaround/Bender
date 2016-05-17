@@ -1,4 +1,4 @@
-# CTEC607 Interactive Skeleton Tracking
+# CTEC607 Interactive Kinect Installation
 
 Requires Microsoft Kinect v1.
 
@@ -19,10 +19,7 @@ Written for the CTEC607 Creative Technologies Studio III Paper at Auckland Unive
 
 ###THE BEER-WARE LICENSE (Revision 42):
 
-[Walter Lim](mailto:waltissomewhere@gmail.com) wrote this project.  As long as you retain this notice you can do whatever you want with this stuff. If we meet some day, and you think this stuff is worth it, you can buy me a beer in return.
-
-
-Java Text RPG written in two weeks - some commands shut down your PC
+[Walter Lim](mailto:waltissomewhere@gmail.com) put together this project.  As long as you retain this notice you can do whatever you want with this stuff. If we meet some day, and you think this stuff is worth it, you can buy me a beer in return.
 
 
 Enjoy :)
