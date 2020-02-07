@@ -1,5 +1,4 @@
-# CTEC607 Interactive Kinect Installation
-
+# Bender
 Requires Microsoft Kinect v1.
 
 Interactive exhibit that pulls X,Y,Z coordinates from your hands and rotates a grid of cubes based on how much you move around. The project uses Z (depth) data from your left and right hands to rotate cubes on the X & Y axis respectively. Also scales sizes of cubes depending on amount of noise the kinect microphone detects.
