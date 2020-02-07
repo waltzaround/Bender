@@ -7,7 +7,7 @@ When no people are detected in front of the camera, it generates random cubes th
 
 Written for the CTEC607 Creative Technologies Studio III Paper at Auckland University of Technology
 
-##Setup Instructions
+## Setup Instructions
 1.  Make sure you have [Processing](https://processing.org/) installed
 2.  Ensure you have the [Kinect 1.6 SDK](http://www.microsoft.com/en-nz/download/details.aspx?id=34808) installed
 3.  Ensure you have the [Kinect4Win Plugin](http://www.magicandlove.com/blog/research/kinect-for-processing-library/) for Processing installed
